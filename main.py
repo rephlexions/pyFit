@@ -5,19 +5,41 @@ from datetime import datetime
 from pygal.style import DarkStyle
 
 class Analyze():
-    def __init__(self,option):
-        self.option = option
-    
-    def openFile():    
+    def __init__(self):
+        pass
+
+    def speed(self):
+        
         filename = 'Daily Summaries.csv'
         with open(filename) as f:
             reader = csv.reader(f)
-            return reader
 
+            dates, avg_speeds, max_speeds, min_speeds = [], [], [], []
+            for row in reader:
+                try:
+                    current_date = datetime.strptime(row[0],"%Y-%m-%d")
+                    avg_speed = int(float(row[7])) * 3.6
+                    max_speed = int(float(row[8])) * 3.6
+                    min_speed = int(float(row[9])) * 3.6
+                except ValueError:
+                    print('Missing speed data')
+                else:
+                    dates.append(current_date.month)
+                    avg_speeds.append(avg_speed)
+                    max_speeds.append(max_speed)
+                    min_speeds.append(min_speed)
 
+        line_chart = pygal.Line(height=800,width=1500, spacing=10,margin=50,)
+        line_chart.title = 'Average Speed (km/h)'
+        line_chart.x_labels = map(str, dates)
+        line_chart.add('Avg Speed',avg_speeds)
+        line_chart.add('Max Speed',max_speeds, secondary=True)
+        ##line_chart.render_to_file('avg_speed.svg')
+        # lxml module
+        line_chart.render_in_browser()
 
 def analyze_data():
-    filename = os.path.abspath(r'Fit\Daily Aggregations\Daily Summaries.csv')
+    filename = 'Daily Summaries.csv'
     with open(filename) as f:
         reader = csv.reader(f)
    
@@ -57,13 +79,22 @@ def analyze_data():
     line_chart.render_to_file('duration.svg')
 
 
+def openFile():    
+        filename = 'Daily Summaries.csv'
+        with open(filename) as f:
+            reader = csv.reader(f)
+            return reader
+
 def main():
 
     print('This program analyzes yout Google Fit data.\n')
     print('Make sure you have the file Daily Summaries.csv.\n')
     user_input = input('Do you want to start? Y/N \n')
     if user_input == 'Y' or 'y':
-        analyze_data()
+        speed = 'speed'
+        if speed == 'speed':
+            graph_speed = Analyze()
+            graph_speed.speed()
     else:
         exit
 
