@@ -12,16 +12,19 @@ def main():
         print('1 - Speed')
         print('2 - Activities time')
         print('3 - Steps')
-        
-        user_input = input()
-        user_date = input('Please enter date in format YYY-MM-DD\n')
-        
-        validate_date(user_date)
-        
+
         if user_input == '1':
+            user_input = input()
+            user_date = input('Please enter date in format YYY-MM-DD\n')    
+            validate_date(user_date)
+
             graph_speed = Analyze(user_date)
             graph_speed.speed()
         elif user_input == '2':
+            user_input = input()
+            user_date = input('Please enter date in format YYY-MM-DD\n')    
+            validate_date(user_date)
+
             bar_time = Analyze(user_date)
             bar_time.activity_time()
         elif user_input == '3':
