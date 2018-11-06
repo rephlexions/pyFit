@@ -105,7 +105,7 @@ class Analyze():
         filename = 'Daily Summaries.csv'
         with open(filename) as f:
             reader = csv.reader(f)
-            steps_counter = []
+            steps_counter, fdates = [], []
             for row in reader:
                 try:
                     current_date = datetime.strptime(row[0],"%Y-%m-%d")
@@ -119,6 +119,16 @@ class Analyze():
                 else:
                     if datetime_date > datetime.strptime(self.user_date, '%Y-%m-%d'):
                         steps_counter.append(step)
+        
+        fig, ax = plt.subplots(dpi=170)
+        fdates = mdates.date2num(fdates)
+        ax.plot_date(fdates, steps_counter,'bo-', color='#08d9d6')
+        date_formatter = mdates.DateFormatter('%Y-%m')
+
+        ax.xaxis.set_major_formatter(date_formatter)
+        ax.set_title("Max and Average Speeds (km/h)")
+        fig.autofmt_xdate()
+        plt.show()
        
 
     """
