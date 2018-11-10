@@ -26,7 +26,6 @@ class Analyze():
 
                     avg_speed = int(float(row[7])) * 3.6
                     max_speed = int(float(row[8])) * 3.6
-                    #min_speed = int(float(row[9])) * 3.6
                 except ValueError:
                     pass
                     print('Missing speed data')
@@ -38,12 +37,13 @@ class Analyze():
 
         fig, ax = plt.subplots(dpi=170)
         fdates = mdates.date2num(fdates)
-        ax.plot_date(fdates, max_speeds,'bo-', color='#ff2e63')
-        ax.plot_date(fdates, avg_speeds,'bo-', color='#08d9d6')
+        ax.plot_date(fdates, max_speeds,'bo-', color='#ff2e63', label='Max Speed')
+        ax.plot_date(fdates, avg_speeds,'bo-', color='#08d9d6', label='Average Speed')
         date_formatter = mdates.DateFormatter('%d-%m')
 
         ax.xaxis.set_major_formatter(date_formatter)
-        ax.set_title("Max and Average Speeds (km/h)")
+        ax.set_ylabel('km/h')
+        ax.set_title("Max and Average Speeds")
         fig.autofmt_xdate()
         plt.show()
 
@@ -118,28 +118,16 @@ class Analyze():
                     print('Missing speed data')
                 else:
                     if datetime_date > datetime.strptime(self.user_date, '%Y-%m-%d'):
+                        fdates.append(datetime_date)
                         steps_counter.append(step)
-        
-        fig, ax = plt.subplots(dpi=170)
+
+        ax = plt.subplot(111)
         fdates = mdates.date2num(fdates)
-        ax.plot_date(fdates, steps_counter,'bo-', color='#08d9d6')
-        date_formatter = mdates.DateFormatter('%Y-%m')
-
+        ax.bar(fdates, steps_counter,align='edge', width=0.5, color='#ff2e63')
+        date_formatter = mdates.DateFormatter('%m-%Y')
         ax.xaxis.set_major_formatter(date_formatter)
-        ax.set_title("Max and Average Speeds (km/h)")
-        fig.autofmt_xdate()
-        plt.show()
-       
+        ax.set_ylabel('Steps')
+        ax.set_title('Number of steps')
+        ax.xaxis_date()
 
-    """
-        # Plot data.
-        fig = plt.figure(dpi=100, figsize=(7, 3))
-        plt.plot(avg_speeds, c='blue')
-        # Format plot.
-        plt.title("Speed Data", fontsize=15)
-        plt.xlabel('', fontsize=16)
-        plt.ylabel('', fontsize=16)
-        plt.tick_params(axis='both', which='major', labelsize=16)
         plt.show()
-    """
-
